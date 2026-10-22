@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <meta name="theme-color" content="#050609">
+  <meta name="description" content="NONONICK FORGE — mobile-first web IDE">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 script-src 'self' blob:;
+                 style-src 'self' 'unsafe-inline';
+                 img-src 'self' data: blob:;
+                 font-src 'self' data:;
+                 connect-src 'self' https://api.github.com;
+                 frame-src 'self' blob:;
+                 worker-src 'self' blob:;
+                 object-src 'none';
+                 base-uri 'none';
+                 form-action 'none';
+                 manifest-src 'self'">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="FORGE">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./icon-192.png">
+  <link rel="stylesheet" href="./app.css">
+  <link rel="stylesheet" href="./editor.css">
+  <title>NONONICK FORGE</title>
+</head>
+<body>
+  <div id="app" class="app">
+    <header class="topbar">
+      <button id="btn-files-toggle" class="icon-btn" type="button" aria-label="فایل‌ها">
+        <span aria-hidden="true">☰</span>
+      </button>
+      <div class="brand" aria-label="NONONICK FORGE">
+        <span class="brand-mark">N</span>
+        <span class="brand-text">NONONICK <b>FORGE</b></span>
+      </div>
+      <div id="save-state" class="save-state" role="status" aria-live="polite">آماده</div>
+    </header>
+
+    <nav id="tabs" class="tabs" aria-label="فایل‌های باز"></nav>
+
+    <main id="editor-shell" class="editor-shell">
+      <div id="editor" class="editor" dir="ltr"></div>
+      <div id="editor-fallback" class="editor-fallback hidden" role="alert">
+        <h2>ویرایشگر در دسترس نیست</h2>
+        <p>بستهٔ CodeMirror ساخته نشده است. در ریشهٔ پروژه اجرا کنید:</p>
+        <pre><code>npm ci
+npm run build:vendor</code></pre>
+        <p>سپس صفحه را دوباره بارگذاری کنید.</p>
+        <pre id="fallback-content" class="fallback-content" dir="ltr"></pre>
+      </div>
+    </main>
+
+    <div id="toolbar" class="editor-toolbar" role="toolbar" aria-label="نوار ابزار ویرایشگر">
+      <button type="button" data-cmd="undo" aria-label="واگرد">↶</button>
+      <button type="button" data-cmd="redo" aria-label="ازنو">↷</button>
+      <button type="button" data-cmd="indent" aria-label="تورفتگی">⇥</button>
+      <button type="button" data-cmd="outdent" aria-label="کاهش تورفتگی">⇤</button>
+      <button type="button" data-cmd="pair" data-open="(" data-close=")" aria-label="پرانتز">( )</button>
+      <button type="button" data-cmd="pair" data-open="[" data-close="]" aria-label="براکت">[ ]</button>
+      <button type="button" data-cmd="pair" data-open="{" data-close="}" aria-label="آکولاد">{ }</button>
+      <button type="button" data-cmd="pair" data-open="'" data-close="'" aria-label="گیومه">' '</button>
+      <button type="button" data-cmd="pair" data-open='"' data-close='"' aria-label="گیومهٔ دوتایی">" "</button>
+      <button type="button" data-cmd="pair" data-open="`" data-close="`" aria-label="بک‌تیک">` `</button>
+      <button type="button" data-cmd="semicolon" aria-label="سمی‌کالن">;</button>
+      <button type="button" data-cmd="left" aria-label="چپ">←</button>
+      <button type="button" data-cmd="right" aria-label="راست">→</button>
+      <button type="button" data-cmd="up" aria-label="بالا">↑</button>
+      <button type="button" data-cmd="down" aria-label="پایین">↓</button>
+      <button type="button" data-cmd="save" aria-label="ذخیره">💾</button>
+      <button type="button" data-cmd="search" aria-label="جستجو در فایل">⌕</button>
+    </div>
+
+    <nav id="bottom-nav" class="bottom-nav" aria-label="ناوبری اصلی">
+      <button type="button" data-route="files" class="nav-btn is-active">
+        <span class="nav-icon" aria-hidden="true">▤</span><span>فایل‌ها</span>
+      </button>
+      <button type="button" data-route="search" class="nav-btn">
+        <span class="nav-icon" aria-hidden="true">⌕</span><span>جستجو</span>
+      </button>
+      <button type="button" data-route="preview" class="nav-btn">
+        <span class="nav-icon" aria-hidden="true">▶</span><span>پیش‌نمایش</span>
+      </button>
+      <button type="button" data-route="console" class="nav-btn">
+        <span class="nav-icon" aria-hidden="true">⌨</span><span>کنسول</span>
+      </button>
+      <button type="button" data-route="git" class="nav-btn">
+        <span class="nav-icon" aria-hidden="true">⑂</span><span>Git</span>
+      </button>
+      <button type="button" data-route="settings" class="nav-btn">
+        <span class="nav-icon" aria-hidden="true">⚙</span><span>تنظیمات</span>
+      </button>
+    </nav>
+  </div>
+
+  <div id="sheet-backdrop" class="sheet-backdrop hidden"></div>
+  <section id="sheet" class="sheet hidden" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+    <header class="sheet-header">
+      <h2 id="sheet-title">پنل</h2>
+      <button id="sheet-close" type="button" class="icon-btn" aria-label="بستن">✕</button>
+    </header>
+    <div id="sheet-body" class="sheet-body"></div>
+  </section>
+
+  <section id="preview-view" class="preview-view hidden" aria-label="پیش‌نمایش پروژه">
+    <header class="preview-header">
+      <button id="preview-close" type="button" class="icon-btn" aria-label="بستن پیش‌نمایش">✕</button>
+      <strong>پیش‌نمایش</strong>
+      <select id="preview-size" aria-label="اندازهٔ پیش‌نمایش">
+        <option value="responsive">واکنش‌گرا</option>
+        <option value="390x844">iPhone 390×844</option>
+        <option value="844x390">Landscape 844×390</option>
+      </select>
+      <button id="preview-refresh" type="button" class="icon-btn" aria-label="بارگذاری دوباره">↻</button>
+    </header>
+    <div id="preview-host" class="preview-host"></div>
+  </section>
+
+  <div id="modal-root"></div>
+  <div id="toast-root" class="toast-root" aria-live="polite" aria-atomic="true"></div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

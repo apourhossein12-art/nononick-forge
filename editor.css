@@ -1,0 +1,48 @@
+.cm-editor {
+  height: 100%;
+  background: #050609;
+  color: #e6edf7;
+  font-size: var(--editor-font-size);
+}
+.cm-editor.cm-focused { outline: none; }
+.cm-scroller {
+  font-family: var(--font-mono);
+  line-height: 1.65;
+  -webkit-overflow-scrolling: touch;
+}
+.cm-content {
+  caret-color: #62d9ff;
+  padding-bottom: 40vh;
+}
+.cm-line { padding: 0 2px; }
+.cm-gutters {
+  background: #090c12;
+  color: #57657a;
+  border: none !important;
+  border-right: 1px solid #1b2230 !important;
+}
+.cm-lineNumbers .cm-gutterElement { padding: 0 8px 0 6px; }
+.cm-activeLine { background: rgba(98,217,255,.035) !important; }
+.cm-activeLineGutter { background: rgba(98,217,255,.06) !important; color: #62d9ff; }
+.cm-selectionBackground { background: rgba(98,217,255,.18) !important; }
+.cm-cursor { border-left-color: #62d9ff !important; }
+.cm-matchingBracket { color: #62d9ff !important; background: rgba(98,217,255,.12); }
+.cm-searchMatch { background: rgba(255,196,107,.2); outline: 1px solid rgba(255,196,107,.5); }
+.cm-searchMatch-selected { background: rgba(98,217,255,.25); }
+.cm-panels {
+  background: #0d1119;
+  color: #e6edf7;
+  border-color: #1b2230;
+}
+.cm-panels input, .cm-panels button {
+  font-family: var(--font-mono);
+  background: #121826;
+  color: #e6edf7;
+  border: 1px solid #1b2230;
+  min-height: 30px;
+}
+.cm-tooltip {
+  background: #0d1119;
+  border: 1px solid #1b2230;
+  color: #e6edf7;
+}
